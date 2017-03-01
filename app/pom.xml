@@ -10,14 +10,49 @@
     <packaging>war</packaging>
     <name>app Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+    </properties>
+
     <dependencies>
+
+        <dependency>
+            <groupId>com.wy.eschart</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <!-- jdbc -->
+                <jdbc.url>jdbc:postgresql://localhost:5432/eschart</jdbc.url>
+                <jdbc.user>eschart</jdbc.user>
+                <jdbc.pwd>eschart</jdbc.pwd>
+            </properties>
+        </profile>
+
+    </profiles>
     <build>
         <finalName>app</finalName>
     </build>

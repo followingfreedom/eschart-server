@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.wy.escharts")
+@ComponentScan(basePackages = {"com.wy.escharts"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 
     //REST don't need
