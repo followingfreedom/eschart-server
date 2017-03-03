@@ -19,6 +19,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
+        <!-- DO -->
         <javaModelGenerator targetPackage="com.wy.eschart.model"
                             targetProject="${mybatis.sourceRoot}">
             <property name="enableSubPackages" value="true"/>
@@ -26,8 +27,11 @@
         </javaModelGenerator>
 
 
-        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.wy.eschart.model"
-                             targetProject="${mybatis.sourceRoot}">
+
+        <!-- Example, Mapper, Provider -->
+        <javaClientGenerator targetPackage="com.wy.eschart.model"
+                             targetProject="${mybatis.sourceRoot}"
+                             type="ANNOTATEDMAPPER" >
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
