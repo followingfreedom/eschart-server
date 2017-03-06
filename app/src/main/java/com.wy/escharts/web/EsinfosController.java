@@ -11,6 +11,7 @@ import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -37,6 +38,7 @@ public class EsinfosController {
     private ChartInfosDOMapper chartInfosDOMapper;
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json", produces = "application/json;charset=UTF-8")
+    @Transactional
     public void insertEsinfos(@RequestBody Map<String, List<AggsModel>> aggs) {
         Map.Entry<String, List<AggsModel>> entry = aggs.entrySet().iterator().next();
         final String chartName = entry.getKey();
