@@ -35,6 +35,9 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
+        <table tableName="chartInfos"  domainObjectName="chartInfos.ChartInfosDO">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+        </table>
 
         <table tableName="esinfos"  domainObjectName="esinfos.EsinfosDO">
             <generatedKey column="id" sqlStatement="JDBC" identity="true"/>

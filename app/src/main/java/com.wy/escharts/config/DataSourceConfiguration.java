@@ -1,8 +1,10 @@
 package com.wy.escharts.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.postgresql.util.PGobject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,11 @@ import javax.sql.DataSource;
 @Configuration
 @MapperScan("com.wy.eschart.model")
 public class DataSourceConfiguration {
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        return  new ObjectMapper();
+    }
 
     @Bean
     public DataSourceTransactionManager transactionManager(){
