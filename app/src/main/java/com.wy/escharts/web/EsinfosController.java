@@ -7,6 +7,7 @@ import com.wy.eschart.model.ChartInfosDOMapper;
 import com.wy.eschart.model.EsinfosDOMapper;
 import com.wy.eschart.model.chartInfos.ChartInfosDO;
 import com.wy.eschart.model.esinfos.EsinfosDO;
+import com.wy.eschart.utilities.pg.PGCommon;
 import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class EsinfosController {
     private static Logger logger = LoggerFactory.getLogger(EsinfosController.class);
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private PGCommon pgCommon;
 
     @Autowired
     private EsinfosDOMapper esinfosDOMapper;
@@ -51,7 +52,7 @@ public class EsinfosController {
         models.forEach(model -> {
             EsinfosDO esinfosDO = new EsinfosDO();
             try {
-                esinfosDO.setAggs(getPGObject(model));
+                esinfosDO.setAggs(pgCommon.getPGObject(model));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
@@ -70,10 +71,4 @@ public class EsinfosController {
         return "test";
     }
 
-    private PGobject getPGObject(Object originValue) throws JsonProcessingException, SQLException {
-        PGobject pGobject = new PGobject();
-        pGobject.setType("json");
-        pGobject.setValue(objectMapper.writeValueAsString(originValue));
-        return pGobject;
-    }
 }
