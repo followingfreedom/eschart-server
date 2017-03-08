@@ -1,5 +1,6 @@
 package com.wy.escharts.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wy.eschart.bean.AggsModel;
 import com.wy.eschart.model.ChartInfosDOMapper;
@@ -7,7 +8,9 @@ import com.wy.eschart.model.EsinfosDOMapper;
 import com.wy.eschart.model.chartInfos.ChartInfosDO;
 import com.wy.eschart.model.esinfos.EsinfosDO;
 import com.wy.eschart.utilities.es.ESDSLGenerator;
+import com.wy.eschart.utilities.es.HttpClientTools;
 import com.wy.eschart.utilities.pg.PGCommon;
+import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class EsinfosController {
     private PGCommon pgCommon;
 
     @Autowired
+    private HttpClientTools httpClientTools;
+
+    @Autowired
     private EsinfosDOMapper esinfosDOMapper;
 
     @Autowired
@@ -50,6 +56,14 @@ public class EsinfosController {
 
         ESDSLGenerator esdslGenerator = new ESDSLGenerator();
         Map dslAggMap = esdslGenerator.generateESAggsDSL(models);
+
+        List list = null;
+        try {
+            list = httpClientTools.post("http://localhost:9200/cars/transactions/_search",
+                    JSONObject.toJSONString(dslAggMap), ContentType.APPLICATION_JSON, 6000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             chartInfosDO.setDslaggs(pgCommon.getPGObject(dslAggMap));
         } catch (JsonProcessingException e) {
