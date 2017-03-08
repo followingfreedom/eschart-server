@@ -1,14 +1,13 @@
 package com.wy.escharts.web;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wy.eschart.bean.AggsModel;
 import com.wy.eschart.model.ChartInfosDOMapper;
 import com.wy.eschart.model.EsinfosDOMapper;
 import com.wy.eschart.model.chartInfos.ChartInfosDO;
 import com.wy.eschart.model.esinfos.EsinfosDO;
+import com.wy.eschart.utilities.es.ESDSLGenerator;
 import com.wy.eschart.utilities.pg.PGCommon;
-import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +45,20 @@ public class EsinfosController {
 
         ChartInfosDO chartInfosDO = new ChartInfosDO();
         chartInfosDO.setName(chartName);
-        chartInfosDOMapper.insert(chartInfosDO);
 
         List<AggsModel> models = entry.getValue();
+
+        ESDSLGenerator esdslGenerator = new ESDSLGenerator();
+        Map dslAggMap = esdslGenerator.generateESAggsDSL(models);
+        try {
+            chartInfosDO.setDslaggs(pgCommon.getPGObject(dslAggMap));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        chartInfosDOMapper.insert(chartInfosDO);
+
         models.forEach(model -> {
             EsinfosDO esinfosDO = new EsinfosDO();
             try {
